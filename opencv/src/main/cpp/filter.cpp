@@ -310,9 +310,9 @@ jobject makeBitmapNostalgia(JNIEnv *env, jclass obj, jobject bitmap) {
                     break;
                 }
 
-                uchar r = p[j * 3];
-                uchar g = p[j * 3 + 1];
-                uchar b = p[j * 3 + 2];
+                int r = p[j * 3];
+                int g = p[j * 3 + 1];
+                int b = p[j * 3 + 2];
                 int newR = 0.393 * r + 0.769 * g + 0.189 * b;
                 int newG = 0.349 * r + 0.686 * g + 0.168 * b;
                 int newB = 0.272 * r + 0.534 * g + 0.131 * b;

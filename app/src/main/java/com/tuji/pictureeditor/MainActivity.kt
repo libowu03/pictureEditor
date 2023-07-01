@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private var mIsSelectColorWidthModel = false
     private var mHhlData:HslBean = HslBean()
     private var mSaturationData: HslBean = HslBean()
+    private var mLightData: HslBean = HslBean()
 
 
 
@@ -591,6 +592,82 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     findViewById<ImageView>(R.id.vImageCover).setImageBitmap(mCurrentBitmap)
                 }
+            }
+        }
+
+        //=========明度========
+        findViewById<RadioGroup>(R.id.vRgColorLightTab).setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId){
+                R.id.vRbLightRed -> {
+                    findViewById<SeekBar>(R.id.vSeekLight).progress = (mLightData.redSValue*100).toInt()
+                }
+                R.id.vRbLightYellow -> {
+                    findViewById<SeekBar>(R.id.vSeekLight).progress = (mLightData.yellowSValue*100).toInt()
+                }
+                R.id.vRbLightGreen -> {
+                    findViewById<SeekBar>(R.id.vSeekLight).progress = (mLightData.greenSValue*100).toInt()
+                }
+                R.id.vRbLightCyan -> {
+                    findViewById<SeekBar>(R.id.vSeekLight).progress = (mLightData.cyanSValue*100).toInt()
+                }
+                R.id.vRbLightBlue -> {
+                    findViewById<SeekBar>(R.id.vSeekLight).progress = (mLightData.blueSValue*100).toInt()
+                }
+                R.id.vRbLightCarmine -> {
+                    findViewById<SeekBar>(R.id.vSeekLight).progress = (mLightData.carmineSValue*100).toInt()
+                }
+                R.id.vRbLightRGB -> {
+                    findViewById<SeekBar>(R.id.vSeekLight).progress = (mLightData.rgbSValue*100).toInt()
+
+                }
+            }
+        }
+        findViewById<SeekBar>(R.id.vSeekLight).setOnSeekBarChangeListener(object:SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                setLightData()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<Button>(R.id.vBtnApplyLightColor).setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val tmp = OpenCvIn.changeLight(bitmap,bitmapMask,mLightData.rgbLValue)
+                val mCurrentBitmap = OpenCvIn.changeLightByChannel(tmp,bitmapMask,mLightData.redLValue,mLightData.greenLValue,mLightData.blueLValue,mLightData.cyanLValue,mLightData.yellowLValue,mLightData.carmineLValue)
+                runOnUiThread {
+                    findViewById<ImageView>(R.id.vImageCover).setImageBitmap(mCurrentBitmap)
+                }
+            }
+        }
+    }
+
+    private fun setLightData() {
+        when(findViewById<RadioGroup>(R.id.vRgColorLightTab).checkedRadioButtonId){
+            R.id.vRbLightRed -> {
+                mLightData.redLValue = findViewById<SeekBar>(R.id.vSeekLight).progress/100f
+            }
+            R.id.vRbLightYellow -> {
+                mLightData.yellowLValue = findViewById<SeekBar>(R.id.vSeekLight).progress/100f
+            }
+            R.id.vRbLightGreen -> {
+                mLightData.greenLValue = findViewById<SeekBar>(R.id.vSeekLight).progress/100f
+            }
+            R.id.vRbLightCyan -> {
+                mLightData.cyanLValue = findViewById<SeekBar>(R.id.vSeekLight).progress/100f
+            }
+            R.id.vRbLightBlue -> {
+                mLightData.blueLValue = findViewById<SeekBar>(R.id.vSeekLight).progress/100f
+            }
+            R.id.vRbLightCarmine -> {
+                mLightData.carmineLValue = findViewById<SeekBar>(R.id.vSeekLight).progress/100f
+            }
+            R.id.vRbLightRGB -> {
+                mLightData.rgbLValue = findViewById<SeekBar>(R.id.vSeekLight).progress/100f
             }
         }
     }

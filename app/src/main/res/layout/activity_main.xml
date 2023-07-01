@@ -1197,7 +1197,6 @@
                     android:layout_marginEnd="30dp"/>
 
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1205,6 +1204,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
+                tools:visibility="gone"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
@@ -1352,6 +1352,163 @@
                     android:text="应用"
                     android:layout_marginTop="10dp"
                     android:id="@+id/vBtnApplySaturationColor"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_usm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:text="明度"/>
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:id="@+id/vRgColorLightTab"
+                    android:layout_marginTop="10dp"
+                    android:clipToPadding="false"
+                    android:clipChildren="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/vClRed">
+                    <RadioButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/vRbLightRGB"
+                        android:background="@drawable/tab_rgb_selecter"
+                        android:textSize="14dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:clipToPadding="false"
+                        android:clipChildren="false"
+                        android:gravity="center"
+                        android:checked="true"
+                        android:button="@null"
+                        android:textColor="@color/tab_text"/>
+                    <RadioButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/vRbLightRed"
+                        android:background="@drawable/tab_red_selecter"
+                        android:textSize="14dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:textColor="@color/tab_text"/>
+                    <RadioButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:id="@+id/vRbLightYellow"
+                        android:background="@drawable/tab_yellow_selecter"
+                        android:textSize="14dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:textColor="@color/tab_text"/>
+                    <RadioButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:id="@+id/vRbLightGreen"
+                        android:background="@drawable/tab_green_selecter"
+                        android:textSize="14dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:button="@null"/>
+                    <RadioButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/vRbLightCyan"
+                        android:background="@drawable/tab_cyan_selecter"
+                        android:textSize="14dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:textColor="@color/tab_text"
+                        android:button="@null"/>
+                    <RadioButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/vRbLightBlue"
+                        android:background="@drawable/tab_blue_selecter"
+                        android:textSize="14dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:textColor="@color/tab_text"/>
+                    <RadioButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/vRbLightCarmine"
+                        android:background="@drawable/tab_carmine_selecter"
+                        android:textSize="14dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/tab_text"
+                        android:button="@null"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="明度"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:id="@+id/vTvRedLightTag"
+                            android:textSize="14dp"
+                            app:layout_constraintStart_toStartOf="parent"/>
+                        <SeekBar
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/vSeekLight"
+                            android:splitTrack="false"
+                            android:max="100"
+                            android:min="-100"
+                            android:layout_marginStart="15dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="应用"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/vBtnApplyLightColor"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"/>
             </LinearLayout>

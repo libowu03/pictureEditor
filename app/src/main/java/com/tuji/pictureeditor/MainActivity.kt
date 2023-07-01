@@ -11,10 +11,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.widget.NestedScrollView
 import com.image.library.opencv.OpenCvIn
+import com.image.library.opencv.bean.ChangeColorDataBean
 import com.image.library.opencv.bean.CurveData
+import com.image.library.opencv.bean.HslBean
 import com.image.library.opencv.bean.MixColorChannel
+import com.image.library.opencv.en.ColorChannelEnum
 import com.image.library.opencv.view.CurveLineToolsView
 import com.image.library.opencv.view.ImageHistogram
 import kotlinx.coroutines.CoroutineScope
@@ -28,17 +32,24 @@ import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
     private var mChannel: Int = 0
+    private var mChangeColorDataBean: ChangeColorDataBean = ChangeColorDataBean()
+    private var mChannelType: ColorChannelEnum = ColorChannelEnum.COLOR_RED
+    private var mIsSelectColorWidthModel = false
+    private var mHhlData:HslBean = HslBean()
+    private var mSaturationData: HslBean = HslBean()
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val image = findViewById<ImageView>(R.id.vImageCover)
         val bitmap = BitmapFactory.decodeResource(resources,R.mipmap.yu)
         image.setImageBitmap(bitmap)
         val bitmapMask = Bitmap.createBitmap(bitmap.width,bitmap.height,Bitmap.Config.ARGB_8888)
         val can = Canvas(bitmapMask)
         can.drawColor(Color.WHITE)
+        findViewById<ScrollSelfView>(R.id.vScoreView).childV = findViewById(R.id.vLlCurv)
         findViewById<Button>(R.id.vBtn1).setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 //像素化
@@ -295,6 +306,462 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        //==========颜色选择器==========
+        findViewById<SeekBar>(R.id.vSeekBarCyan).setOnSeekBarChangeListener(object:OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                setColorSelectData()
+            }
 
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<SeekBar>(R.id.vSeekBarCarmine).setOnSeekBarChangeListener(object:OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                setColorSelectData()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<SeekBar>(R.id.vSeekBarYellow).setOnSeekBarChangeListener(object:OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                setColorSelectData()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<RadioGroup>(R.id.vRgSelectColorTab).setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId){
+                R.id.vRbSelectRed -> {
+                    mChannelType = ColorChannelEnum.COLOR_RED
+                    setSeekbarData(
+                        (mChangeColorDataBean.redRedValue * 100).toInt(),
+                        (mChangeColorDataBean.redGreenValue * 100).toInt(),
+                        (mChangeColorDataBean.redBlueValue * 100).toInt(),
+                        (mChangeColorDataBean.redBlackValue * 100).toInt()
+                    )
+                }
+                R.id.vRbSelectYellow -> {
+                    mChannelType = ColorChannelEnum.COLOR_YELLOW
+                    setSeekbarData(
+                        (mChangeColorDataBean.yellowGreenValue * 100).toInt(),
+                        (mChangeColorDataBean.yellowRedValue * 100).toInt(),
+                        (mChangeColorDataBean.yellowBlueValue * 100).toInt(),
+                        (mChangeColorDataBean.yellowBlackValue * 100).toInt()
+                    )
+                }
+                R.id.vRbSelectGreen -> {
+                    mChannelType = ColorChannelEnum.COLOR_GREEN
+                    setSeekbarData(
+                        (mChangeColorDataBean.greenRedValue * 100).toInt(),
+                        (mChangeColorDataBean.greenGreenValue * 100).toInt(),
+                        (mChangeColorDataBean.greenBlueValue * 100 ).toInt(),
+                        (mChangeColorDataBean.greenBlackValue * 100 ).toInt()
+                    )
+                }
+                R.id.vRbSelectCyan -> {
+                    mChannelType = ColorChannelEnum.COLOR_CYAN
+                    setSeekbarData(
+                        (mChangeColorDataBean.cyanRedValue * 100 ).toInt(),
+                        (mChangeColorDataBean.cyanGreenValue * 100 ).toInt(),
+                        (mChangeColorDataBean.cyanBlueValue * 100 ).toInt(),
+                        (mChangeColorDataBean.cyanBlackValue * 100 ).toInt()
+                    )
+                }
+                R.id.vRbSelectBlue -> {
+                    mChannelType = ColorChannelEnum.COLOR_BLUE
+                    setSeekbarData(
+                        (mChangeColorDataBean.blueRedValue * 100 ).toInt(),
+                        (mChangeColorDataBean.blueGreenValue * 100 ).toInt(),
+                        (mChangeColorDataBean.blueBlueValue * 100 ).toInt(),
+                        (mChangeColorDataBean.blueBlackValue * 100 ).toInt()
+                    )
+                }
+                R.id.vRbSelectCarmine -> {
+                    mChannelType = ColorChannelEnum.COLOR_CARMINE
+                    setSeekbarData(
+                        (mChangeColorDataBean.carmineRedValue * 100 ).toInt(),
+                        (mChangeColorDataBean.carmineGreenValue * 100 ).toInt(),
+                        (mChangeColorDataBean.carmineBlueValue * 100 ).toInt(),
+                        (mChangeColorDataBean.carmineBlackValue * 100 ).toInt()
+                    )
+                }
+                R.id.vRbSelectWhite -> {
+                    mChannelType = ColorChannelEnum.COLOR_WHITE
+                    setSeekbarData(
+                        (mChangeColorDataBean.whiteRedValue * 100 ).toInt(),
+                        (mChangeColorDataBean.whiteGreenValue * 100 ).toInt(),
+                        (mChangeColorDataBean.whiteBlueValue * 100 ).toInt(),
+                        (mChangeColorDataBean.whiteBlackValue * 100 ).toInt()
+                    )
+                }
+                R.id.vRbSelectBlack -> {
+                    mChannelType = ColorChannelEnum.COLOR_BLACK
+                    setSeekbarData(
+                        (mChangeColorDataBean.blackRedValue * 100 ).toInt(),
+                        (mChangeColorDataBean.blackGreenValue * 100 ).toInt(),
+                        (mChangeColorDataBean.blackBlueValue * 100 ).toInt(),
+                        (mChangeColorDataBean.blackBlackValue * 100 ).toInt()
+                    )
+                }
+            }
+        }
+        findViewById<Button>(R.id.vBtnApplySelectColor).setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val currentBitmap = OpenCvIn.changeColorByChannelPro(
+                    bitmap,bitmapMask,
+                    mChangeColorDataBean.redRedValue,
+                    mChangeColorDataBean.redGreenValue,
+                    mChangeColorDataBean.redBlueValue,
+                    mChangeColorDataBean.redBlackValue,
+
+                    mChangeColorDataBean.greenRedValue,
+                    mChangeColorDataBean.greenGreenValue,
+                    mChangeColorDataBean.blueBlueValue,
+                    mChangeColorDataBean.blueBlackValue,
+
+                    mChangeColorDataBean.blueRedValue,
+                    mChangeColorDataBean.blueGreenValue,
+                    mChangeColorDataBean.blueBlueValue,
+                    mChangeColorDataBean.blueBlackValue,
+
+                    mChangeColorDataBean.cyanRedValue,
+                    mChangeColorDataBean.cyanGreenValue,
+                    mChangeColorDataBean.cyanBlueValue,
+                    mChangeColorDataBean.cyanBlackValue,
+
+                    mChangeColorDataBean.yellowRedValue,
+                    mChangeColorDataBean.yellowGreenValue,
+                    mChangeColorDataBean.yellowBlueValue,
+                    mChangeColorDataBean.yellowBlackValue,
+
+                    mChangeColorDataBean.carmineRedValue,
+                    mChangeColorDataBean.carmineGreenValue,
+                    mChangeColorDataBean.carmineBlueValue,
+                    mChangeColorDataBean.carmineBlackValue,
+
+                    mChangeColorDataBean.whiteRedValue,
+                    mChangeColorDataBean.whiteGreenValue,
+                    mChangeColorDataBean.whiteBlueValue,
+                    mChangeColorDataBean.whiteBlackValue,
+
+                    mChangeColorDataBean.blackRedValue,
+                    mChangeColorDataBean.blackGreenValue,
+                    mChangeColorDataBean.blackBlueValue,
+                    mChangeColorDataBean.blackBlackValue,
+
+                    mIsSelectColorWidthModel
+                )
+                runOnUiThread {
+                    findViewById<ImageView>(R.id.vImageCover).setImageBitmap(currentBitmap)
+                }
+            }
+        }
+        findViewById<Button>(R.id.vBtnColorModel).setOnClickListener {
+            findViewById<Button>(R.id.vBtnColorModel).text = if (!mIsSelectColorWidthModel) "绝对模式" else "相对模式"
+            mIsSelectColorWidthModel = !mIsSelectColorWidthModel
+        }
+
+        //==========HSL==========
+        findViewById<RadioGroup>(R.id.vRgColorHslTab).setOnCheckedChangeListener { group, checkedId ->
+            chooseHslTab()
+        }
+        findViewById<SeekBar>(R.id.vColorSeekbarH).setOnSeekBarChangeListener(object:SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                setHslData()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<SeekBar>(R.id.vColorSeekbarS).setOnSeekBarChangeListener(object:SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                setHslData()
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<SeekBar>(R.id.vColorSeekbarL).setOnSeekBarChangeListener(object:SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                setHslData()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<Button>(R.id.vBtnApplyHslColor).setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val mCurrentBitmap= OpenCvIn.hsl(bitmap,bitmapMask,
+                    mHhlData.redSValue,mHhlData.redHValue,mHhlData.redLValue,
+                    mHhlData.greenSValue,mHhlData.greenHValue,mHhlData.greenLValue,
+                    mHhlData.blueSValue,mHhlData.blueHValue,mHhlData.blueLValue,
+                    mHhlData.cyanSValue,mHhlData.cyanHValue,mHhlData.cyanLValue,
+                    mHhlData.carmineSValue,mHhlData.carmineHValue,mHhlData.carmineLValue,
+                    mHhlData.yellowSValue,mHhlData.yellowHValue,mHhlData.yellowLValue,
+                    mHhlData.orangeSValue,mHhlData.orangeHValue,mHhlData.orangeLValue,
+                    mHhlData.purpleSValue,mHhlData.purpleHValue,mHhlData.purpleLValue,)
+                runOnUiThread {
+                    findViewById<ImageView>(R.id.vImageCover).setImageBitmap(mCurrentBitmap)
+                }
+            }
+        }
+
+        //=========饱和度========
+        findViewById<RadioGroup>(R.id.vRgColorSaturationTab).setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId){
+                R.id.vRbSaturationRed -> {
+                    findViewById<SeekBar>(R.id.vSeekSaturability).progress = (mSaturationData.redSValue*100).toInt()
+                }
+                R.id.vRbSaturationYellow -> {
+                    findViewById<SeekBar>(R.id.vSeekSaturability).progress = (mSaturationData.yellowSValue*100).toInt()
+
+                }
+                R.id.vRbSaturationGreen -> {
+                    findViewById<SeekBar>(R.id.vSeekSaturability).progress = (mSaturationData.greenSValue*100).toInt()
+
+                }
+                R.id.vRbSaturationCyan -> {
+                    findViewById<SeekBar>(R.id.vSeekSaturability).progress = (mSaturationData.cyanSValue*100).toInt()
+
+                }
+                R.id.vRbSaturationBlue -> {
+                    findViewById<SeekBar>(R.id.vSeekSaturability).progress = (mSaturationData.blueSValue*100).toInt()
+
+                }
+                R.id.vRbSaturationCarmine -> {
+                    findViewById<SeekBar>(R.id.vSeekSaturability).progress = (mSaturationData.carmineSValue*100).toInt()
+
+                }
+                R.id.vRbSaturationRGB -> {
+                    findViewById<SeekBar>(R.id.vSeekSaturability).progress = (mSaturationData.rgbSValue*100).toInt()
+
+                }
+            }
+        }
+        findViewById<SeekBar>(R.id.vSeekSaturability).setOnSeekBarChangeListener(object:SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                setSaturationData()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<Button>(R.id.vBtnApplySaturationColor).setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val tmp = OpenCvIn.changeSaturationTwo(bitmap,bitmapMask,mSaturationData.rgbSValue)
+                val mCurrentBitmap = OpenCvIn.startChangeHsbS(tmp,bitmapMask,mSaturationData.redSValue,mSaturationData.greenSValue,mSaturationData.blueSValue,mSaturationData.cyanSValue,mSaturationData.yellowSValue,mSaturationData.carmineSValue)
+                runOnUiThread {
+                    findViewById<ImageView>(R.id.vImageCover).setImageBitmap(mCurrentBitmap)
+                }
+            }
+        }
     }
+
+    private fun setSaturationData() {
+        when(findViewById<RadioGroup>(R.id.vRgColorSaturationTab).checkedRadioButtonId){
+            R.id.vRbSaturationRed -> {
+                mSaturationData.redSValue = findViewById<SeekBar>(R.id.vSeekSaturability).progress/100f
+            }
+            R.id.vRbSaturationYellow -> {
+                mSaturationData.yellowSValue = findViewById<SeekBar>(R.id.vSeekSaturability).progress/100f
+            }
+            R.id.vRbSaturationGreen -> {
+                mSaturationData.greenSValue = findViewById<SeekBar>(R.id.vSeekSaturability).progress/100f
+            }
+            R.id.vRbSaturationCyan -> {
+                mSaturationData.cyanSValue = findViewById<SeekBar>(R.id.vSeekSaturability).progress/100f
+            }
+            R.id.vRbSaturationBlue -> {
+                mSaturationData.blueSValue = findViewById<SeekBar>(R.id.vSeekSaturability).progress/100f
+            }
+            R.id.vRbSaturationCarmine -> {
+                mSaturationData.carmineSValue = findViewById<SeekBar>(R.id.vSeekSaturability).progress/100f
+            }
+            R.id.vRbSaturationRGB -> {
+                mSaturationData.rgbSValue = findViewById<SeekBar>(R.id.vSeekSaturability).progress/100f
+            }
+        }
+    }
+
+    private fun setHslData(){
+        when(findViewById<RadioGroup>(R.id.vRgColorHslTab).checkedRadioButtonId){
+            R.id.vRbHslRed -> {
+                mHhlData.redHValue = findViewById<SeekBar>(R.id.vColorSeekbarH).progress/100f
+                mHhlData.redSValue = findViewById<SeekBar>(R.id.vColorSeekbarS).progress/100f
+                mHhlData.redLValue = findViewById<SeekBar>(R.id.vColorSeekbarL).progress/100f
+            }
+            R.id.vRbHslOrange -> {
+                mHhlData.orangeHValue = findViewById<SeekBar>(R.id.vColorSeekbarH).progress/100f
+                mHhlData.orangeSValue = findViewById<SeekBar>(R.id.vColorSeekbarS).progress/100f
+                mHhlData.orangeLValue = findViewById<SeekBar>(R.id.vColorSeekbarL).progress/100f
+            }
+            R.id.vRbHslYellow -> {
+                mHhlData.yellowHValue = findViewById<SeekBar>(R.id.vColorSeekbarH).progress/100f
+                mHhlData.yellowSValue = findViewById<SeekBar>(R.id.vColorSeekbarS).progress/100f
+                mHhlData.yellowLValue = findViewById<SeekBar>(R.id.vColorSeekbarL).progress/100f
+            }
+            R.id.vRbGreen -> {
+                mHhlData.greenHValue = findViewById<SeekBar>(R.id.vColorSeekbarH).progress/100f
+                mHhlData.greenSValue = findViewById<SeekBar>(R.id.vColorSeekbarS).progress/100f
+                mHhlData.greenLValue = findViewById<SeekBar>(R.id.vColorSeekbarL).progress/100f
+            }
+            R.id.vRbHslCyan -> {
+                mHhlData.cyanHValue = findViewById<SeekBar>(R.id.vColorSeekbarH).progress/100f
+                mHhlData.cyanSValue = findViewById<SeekBar>(R.id.vColorSeekbarS).progress/100f
+                mHhlData.cyanLValue = findViewById<SeekBar>(R.id.vColorSeekbarL).progress/100f
+            }
+            R.id.vRbHslBlue -> {
+                mHhlData.blueHValue = findViewById<SeekBar>(R.id.vColorSeekbarH).progress/100f
+                mHhlData.blueSValue = findViewById<SeekBar>(R.id.vColorSeekbarS).progress/100f
+                mHhlData.blueLValue = findViewById<SeekBar>(R.id.vColorSeekbarL).progress/100f
+            }
+            R.id.vRbHslCarmine -> {
+                mHhlData.carmineHValue = findViewById<SeekBar>(R.id.vColorSeekbarH).progress/100f
+                mHhlData.carmineSValue = findViewById<SeekBar>(R.id.vColorSeekbarS).progress/100f
+                mHhlData.carmineLValue = findViewById<SeekBar>(R.id.vColorSeekbarL).progress/100f
+            }
+            R.id.vRbHslPurple -> {
+                mHhlData.purpleHValue = findViewById<SeekBar>(R.id.vColorSeekbarH).progress/100f
+                mHhlData.purpleSValue = findViewById<SeekBar>(R.id.vColorSeekbarS).progress/100f
+                mHhlData.purpleLValue = findViewById<SeekBar>(R.id.vColorSeekbarL).progress/100f
+            }
+        }
+    }
+
+    private fun chooseHslTab(){
+        when(findViewById<RadioGroup>(R.id.vRgColorHslTab).checkedRadioButtonId){
+            R.id.vRbHslRed -> {
+                findViewById<SeekBar>(R.id.vColorSeekbarH).progress = (mHhlData.redHValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarS).progress = (mHhlData.redSValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarL).progress = (mHhlData.redLValue*100).toInt()
+            }
+            R.id.vRbHslOrange -> {
+                findViewById<SeekBar>(R.id.vColorSeekbarH).progress = (mHhlData.orangeHValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarS).progress = (mHhlData.orangeSValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarL).progress = (mHhlData.orangeLValue*100).toInt()
+            }
+            R.id.vRbHslYellow -> {
+                findViewById<SeekBar>(R.id.vColorSeekbarH).progress = (mHhlData.yellowHValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarS).progress = (mHhlData.yellowSValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarL).progress = (mHhlData.yellowLValue*100).toInt()
+            }
+            R.id.vRbHslGreen -> {
+                findViewById<SeekBar>(R.id.vColorSeekbarH).progress = (mHhlData.greenHValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarS).progress = (mHhlData.greenSValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarL).progress = (mHhlData.greenLValue*100).toInt()
+            }
+            R.id.vRbHslCyan -> {
+                findViewById<SeekBar>(R.id.vColorSeekbarH).progress = (mHhlData.cyanHValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarS).progress = (mHhlData.cyanSValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarL).progress = (mHhlData.cyanLValue*100).toInt()
+            }
+            R.id.vRbHslBlue -> {
+                findViewById<SeekBar>(R.id.vColorSeekbarH).progress = (mHhlData.blueHValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarS).progress = (mHhlData.blueSValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarL).progress = (mHhlData.blueLValue*100).toInt()
+            }
+            R.id.vRbHslCarmine -> {
+                findViewById<SeekBar>(R.id.vColorSeekbarH).progress = (mHhlData.carmineHValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarS).progress = (mHhlData.carmineSValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarL).progress = (mHhlData.carmineLValue*100).toInt()
+            }
+            R.id.vRbHslPurple -> {
+                findViewById<SeekBar>(R.id.vColorSeekbarH).progress = (mHhlData.purpleHValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarS).progress = (mHhlData.purpleSValue*100).toInt()
+                findViewById<SeekBar>(R.id.vColorSeekbarL).progress = (mHhlData.purpleLValue*100).toInt()
+            }
+        }
+    }
+
+    private fun setColorSelectData() {
+        when(mChannelType){
+            ColorChannelEnum.COLOR_RED -> {
+                mChangeColorDataBean.redRedValue = findViewById<SeekBar>(R.id.vSeekBarCyan).progress/100f
+                mChangeColorDataBean.redGreenValue = findViewById<SeekBar>(R.id.vSeekBarCarmine).progress/100f
+                mChangeColorDataBean.redBlueValue = findViewById<SeekBar>(R.id.vSeekBarYellow).progress/100f
+            }
+            ColorChannelEnum.COLOR_YELLOW -> {
+                mChangeColorDataBean.yellowRedValue = findViewById<SeekBar>(R.id.vSeekBarCyan).progress/100f
+                mChangeColorDataBean.yellowGreenValue = findViewById<SeekBar>(R.id.vSeekBarCarmine).progress/100f
+                mChangeColorDataBean.yellowBlueValue = findViewById<SeekBar>(R.id.vSeekBarYellow).progress/100f
+            }
+            ColorChannelEnum.COLOR_GREEN -> {
+                mChangeColorDataBean.greenRedValue = findViewById<SeekBar>(R.id.vSeekBarCyan).progress/100f
+                mChangeColorDataBean.greenGreenValue = findViewById<SeekBar>(R.id.vSeekBarCarmine).progress/100f
+                mChangeColorDataBean.greenBlueValue = findViewById<SeekBar>(R.id.vSeekBarYellow).progress/100f
+            }
+            ColorChannelEnum.COLOR_CYAN -> {
+                mChangeColorDataBean.cyanRedValue = findViewById<SeekBar>(R.id.vSeekBarCyan).progress/100f
+                mChangeColorDataBean.cyanGreenValue = findViewById<SeekBar>(R.id.vSeekBarCarmine).progress/100f
+                mChangeColorDataBean.cyanBlueValue = findViewById<SeekBar>(R.id.vSeekBarYellow).progress/100f
+            }
+            ColorChannelEnum.COLOR_BLUE -> {
+                mChangeColorDataBean.blueRedValue = findViewById<SeekBar>(R.id.vSeekBarCyan).progress/100f
+                mChangeColorDataBean.blueGreenValue = findViewById<SeekBar>(R.id.vSeekBarCarmine).progress/100f
+                mChangeColorDataBean.blueBlueValue = findViewById<SeekBar>(R.id.vSeekBarYellow).progress/100f
+            }
+            ColorChannelEnum.COLOR_CARMINE -> {
+                mChangeColorDataBean.carmineRedValue = findViewById<SeekBar>(R.id.vSeekBarCyan).progress/100f
+                mChangeColorDataBean.carmineGreenValue = findViewById<SeekBar>(R.id.vSeekBarCarmine).progress/100f
+                mChangeColorDataBean.carmineBlueValue = findViewById<SeekBar>(R.id.vSeekBarYellow).progress/100f
+            }
+            ColorChannelEnum.COLOR_WHITE -> {
+                mChangeColorDataBean.whiteRedValue = findViewById<SeekBar>(R.id.vSeekBarCyan).progress/100f
+                mChangeColorDataBean.whiteGreenValue = findViewById<SeekBar>(R.id.vSeekBarCarmine).progress/100f
+                mChangeColorDataBean.whiteBlueValue = findViewById<SeekBar>(R.id.vSeekBarYellow).progress/100f
+            }
+            else -> {
+                mChangeColorDataBean.blackRedValue = findViewById<SeekBar>(R.id.vSeekBarCyan).progress/100f
+                mChangeColorDataBean.blackGreenValue = findViewById<SeekBar>(R.id.vSeekBarCarmine).progress/100f
+                mChangeColorDataBean.blackBlueValue = findViewById<SeekBar>(R.id.vSeekBarYellow).progress/100f
+            }
+        }
+    }
+
+    private fun setSeekbarData(valueOne:Int,valueTwo:Int,valueThree:Int,valueFour:Int){
+        mChangeColorDataBean.channelType = mChannelType.getColorChannelValue()
+        findViewById<SeekBar>(R.id.vSeekBarCyan).progress = ((valueOne)*100f).toInt()
+        findViewById<SeekBar>(R.id.vSeekBarCarmine).progress = ((valueTwo)*100f).toInt()
+        findViewById<SeekBar>(R.id.vSeekBarYellow).progress = ((valueThree)*100f).toInt()
+        findViewById<SeekBar>(R.id.vSeekBarBlack).progress = ((valueFour)*100f).toInt()
+    }
+
 }

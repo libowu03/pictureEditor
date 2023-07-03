@@ -15,6 +15,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.widget.NestedScrollView
 import com.image.library.opencv.OpenCvIn
 import com.image.library.opencv.bean.ChangeColorDataBean
+import com.image.library.opencv.bean.ColorBalance
 import com.image.library.opencv.bean.CurveData
 import com.image.library.opencv.bean.HslBean
 import com.image.library.opencv.bean.MixColorChannel
@@ -39,6 +40,9 @@ class MainActivity : AppCompatActivity() {
     private var mSaturationData: HslBean = HslBean()
     private var mLightData: HslBean = HslBean()
     private var mHueData: HslBean = HslBean()
+    private var mColorPro: ChangeColorDataBean = ChangeColorDataBean()
+    private var mColorMotely: ChangeColorDataBean = ChangeColorDataBean()
+    private var mColorBalance = ColorBalance()
 
 
 
@@ -238,6 +242,15 @@ class MainActivity : AppCompatActivity() {
                 val result = OpenCvIn.mixColorChannel(bitmap,bitmapMask,mixChannel)
                 runOnUiThread{
                     image.setImageBitmap(result)
+                }
+            }
+        }
+        findViewById<Button>(R.id.vBtn11).setOnClickListener {
+            //自动白平衡
+            CoroutineScope(Dispatchers.IO).launch {
+                val bt =OpenCvIn.autoColorBalance(bitmap)
+                runOnUiThread {
+                    findViewById<ImageView>(R.id.vImageCover).setImageBitmap(bt)
                 }
             }
         }
@@ -693,6 +706,213 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     findViewById<ImageView>(R.id.vImageCover).setImageBitmap(mCurrentBitmap)
                 }
+            }
+        }
+
+        //========去除杂色=========
+        findViewById<Button>(R.id.vBtnApplyRemoveColorMotely).setOnClickListener {
+            mColorMotely.redRedValue = -(findViewById<SeekBar>(R.id.vSeekColorMotely).progress/100.0f)
+            mColorMotely.yellowRedValue = -(findViewById<SeekBar>(R.id.vSeekColorMotely).progress/100.0f)
+            mColorMotely.yellowGreenValue = -(findViewById<SeekBar>(R.id.vSeekColorMotely).progress/100.0f)
+            mColorMotely.greenGreenValue = -(findViewById<SeekBar>(R.id.vSeekColorMotely).progress/100.0f)
+            mColorMotely.cyanGreenValue = -(findViewById<SeekBar>(R.id.vSeekColorMotely).progress/100.0f)
+            mColorMotely.cyanBlueValue = -(findViewById<SeekBar>(R.id.vSeekColorMotely).progress/100.0f)
+            mColorMotely.blueBlueValue = -(findViewById<SeekBar>(R.id.vSeekColorMotely).progress/100.0f)
+            mColorMotely.carmineRedValue = -(findViewById<SeekBar>(R.id.vSeekColorMotely).progress/100.0f)
+            mColorMotely.carmineBlueValue = -(findViewById<SeekBar>(R.id.vSeekColorMotely).progress/100.0f)
+            val mCurrentBitmap = OpenCvIn.changeColorByChannelPro(
+                bitmap,bitmapMask,
+                mColorMotely.redRedValue,
+                mColorMotely.redGreenValue,
+                mColorMotely.redBlueValue,
+                mColorMotely.redBlackValue,
+                mColorMotely.greenRedValue,
+                mColorMotely.greenGreenValue,
+                mColorMotely.blueBlueValue,
+                mColorMotely.blueBlackValue,
+                mColorMotely.blueRedValue,
+                mColorMotely.blueGreenValue,
+                mColorMotely.blueBlueValue,
+                mColorMotely.blueBlackValue,
+                mColorMotely.cyanRedValue,
+                mColorMotely.cyanGreenValue,
+                mColorMotely.cyanBlueValue,
+                mColorMotely.cyanBlackValue,
+                mColorMotely.yellowRedValue,
+                mColorMotely.yellowGreenValue,
+                mColorMotely.yellowBlueValue,
+                mColorMotely.yellowBlackValue,
+                mColorMotely.carmineRedValue,
+                mColorMotely.carmineGreenValue,
+                mColorMotely.carmineBlueValue,
+                mColorMotely.carmineBlackValue,
+                mColorMotely.whiteRedValue,
+                mColorMotely.whiteGreenValue,
+                mColorMotely.whiteBlueValue,
+                mColorMotely.whiteBlackValue,
+                mColorMotely.blackRedValue,
+                mColorMotely.blackGreenValue,
+                mColorMotely.blackBlueValue,
+                mColorMotely.blackBlackValue,
+                mColorMotely.isRelative
+            )
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(mCurrentBitmap)
+            }
+        }
+
+        //=========颜色增强========
+        findViewById<Button>(R.id.vBtnApplyColorPro).setOnClickListener {
+            mColorPro.redGreenValue = findViewById<SeekBar>(R.id.vSeekColorPro).progress/100f
+            mColorPro.redBlueValue = findViewById<SeekBar>(R.id.vSeekColorPro).progress/100f
+            mColorPro.yellowBlueValue = findViewById<SeekBar>(R.id.vSeekColorPro).progress/100f
+            mColorPro.greenRedValue = findViewById<SeekBar>(R.id.vSeekColorPro).progress/100f
+            mColorPro.greenBlueValue = findViewById<SeekBar>(R.id.vSeekColorPro).progress/100f
+            mColorPro.cyanRedValue = findViewById<SeekBar>(R.id.vSeekColorPro).progress/100f
+            mColorPro.blueRedValue = findViewById<SeekBar>(R.id.vSeekColorPro).progress/100f
+            mColorPro.blueGreenValue = findViewById<SeekBar>(R.id.vSeekColorPro).progress/100f
+            mColorPro.carmineGreenValue = findViewById<SeekBar>(R.id.vSeekColorPro).progress/100f
+            val mCurrentBitmap = OpenCvIn.changeColorByChannelPro(
+                bitmap,bitmapMask,
+                mColorPro.redRedValue,
+                mColorPro.redGreenValue,
+                mColorPro.redBlueValue,
+                mColorPro.redBlackValue,
+                mColorPro.greenRedValue,
+                mColorPro.greenGreenValue,
+                mColorPro.blueBlueValue,
+                mColorPro.blueBlackValue,
+                mColorPro.blueRedValue,
+                mColorPro.blueGreenValue,
+                mColorPro.blueBlueValue,
+                mColorPro.blueBlackValue,
+                mColorPro.cyanRedValue,
+                mColorPro.cyanGreenValue,
+                mColorPro.cyanBlueValue,
+                mColorPro.cyanBlackValue,
+                mColorPro.yellowRedValue,
+                mColorPro.yellowGreenValue,
+                mColorPro.yellowBlueValue,
+                mColorPro.yellowBlackValue,
+                mColorPro.carmineRedValue,
+                mColorPro.carmineGreenValue,
+                mColorPro.carmineBlueValue,
+                mColorPro.carmineBlackValue,
+                mColorPro.whiteRedValue,
+                mColorPro.whiteGreenValue,
+                mColorPro.whiteBlueValue,
+                mColorPro.whiteBlackValue,
+                mColorPro.blackRedValue,
+                mColorPro.blackGreenValue,
+                mColorPro.blackBlueValue,
+                mColorPro.blackBlackValue,
+                mColorPro.isRelative
+            )
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(mCurrentBitmap)
+            }
+        }
+
+        //=========色彩平衡========
+        val vSeekBarHue = findViewById<SeekBar>(R.id.vSeekBarColorBalanceR)
+        val vSeekBarSaturation = findViewById<SeekBar>(R.id.vSeekBarColorBalanceG)
+        val vSeekBarBrightness = findViewById<SeekBar>(R.id.vSeekBarColorBalanceB)
+        findViewById<RadioGroup>(R.id.vRgColorBalanceTab).setOnCheckedChangeListener { radioGroup, i ->
+            when(i){
+                R.id.vRbShadow -> {
+                    mChannel = 0
+                    //rgb
+                    vSeekBarHue.progress = (mColorBalance.cyanAndRedLow )
+                    vSeekBarSaturation.progress = (mColorBalance.carmineAndGreenLow)
+                    vSeekBarBrightness.progress = (mColorBalance.yellowAndBlueLow)
+                }
+                R.id.vRbCenter -> {
+                    mChannel = 1
+                    //红色
+                    vSeekBarHue.progress = (mColorBalance.cyanAndRedMiddle)
+                    vSeekBarSaturation.progress = (mColorBalance.carmineAndGreenMiddle)
+                    vSeekBarBrightness.progress = (mColorBalance.yellowAndBlueMiddle )
+                }
+                R.id.vRbHightLight -> {
+                    mChannel = 2
+                    vSeekBarHue.progress = (mColorBalance.cyanAndRedHight)
+                    vSeekBarSaturation.progress = (mColorBalance.carmineAndGreenHight)
+                    vSeekBarBrightness.progress = (mColorBalance.yellowAndBlueHight)
+                }
+            }
+            setColorBalanceData((vSeekBarHue.progress).toInt(),(vSeekBarSaturation.progress ).toInt(),(vSeekBarBrightness.progress ).toInt())
+        }
+        findViewById<SeekBar>(R.id.vSeekBarColorBalanceR).setOnSeekBarChangeListener(object:OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                setColorBalanceData(vSeekBarHue.progress,vSeekBarSaturation.progress,vSeekBarBrightness.progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<SeekBar>(R.id.vSeekBarColorBalanceG).setOnSeekBarChangeListener(object:OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                setColorBalanceData(vSeekBarHue.progress,vSeekBarSaturation.progress,vSeekBarBrightness.progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<SeekBar>(R.id.vSeekBarColorBalanceB).setOnSeekBarChangeListener(object:OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                setColorBalanceData(vSeekBarHue.progress,vSeekBarSaturation.progress,vSeekBarBrightness.progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<Button>(R.id.vBtnApplyRemoveColorBalance).setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val mCurrentBitmap = OpenCvIn.changeColorBalance(bitmap,bitmapMask,
+                    mColorBalance.cyanAndRedLow,mColorBalance.carmineAndGreenLow,mColorBalance.yellowAndBlueLow,
+                    mColorBalance.cyanAndRedMiddle,mColorBalance.carmineAndGreenMiddle,mColorBalance.yellowAndBlueMiddle,
+                    mColorBalance.cyanAndRedHight,mColorBalance.carmineAndGreenHight,mColorBalance.yellowAndBlueHight)
+                runOnUiThread {
+                    findViewById<ImageView>(R.id.vImageCover).setImageBitmap(mCurrentBitmap)
+                }
+            }
+        }
+    }
+
+    fun setColorBalanceData(h:Int,s:Int,b:Int){
+        when(mChannel){
+            0 -> {
+                //rgb
+                mColorBalance.cyanAndRedLow = h
+                mColorBalance.carmineAndGreenLow = s
+                mColorBalance.yellowAndBlueLow = b
+            }
+            1 -> {
+                //红色
+                mColorBalance.cyanAndRedMiddle = h
+                mColorBalance.carmineAndGreenMiddle = s
+                mColorBalance.yellowAndBlueMiddle = b
+            }
+            2 -> {
+                //黄色
+                mColorBalance.cyanAndRedHight = h
+                mColorBalance.carmineAndGreenHight = s
+                mColorBalance.yellowAndBlueHight = b
             }
         }
     }

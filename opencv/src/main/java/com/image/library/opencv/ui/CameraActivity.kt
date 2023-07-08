@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -19,6 +20,8 @@ import com.image.library.main.R
 import com.image.library.opencv.OpenCvIn
 import com.image.library.opencv.camera.CameraView
 import com.image.library.opencv.camera.gl.GLUtil
+import com.image.library.opencv.ext.setStatusBarColor
+import com.image.library.opencv.ext.setStatusBarHidden
 import com.image.library.opencv.utils.Applications
 import com.image.library.opencv.utils.FileUtils
 import kotlinx.coroutines.CoroutineScope
@@ -94,6 +97,7 @@ class CameraActivity : FragmentActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStatusBarHidden(this,true,false)
         setContentView(R.layout.activity_camera)
         GLUtil.init(Applications.context())
         vCamera = findViewById(R.id.vCamera)

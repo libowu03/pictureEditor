@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.vBtn8).setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                //黑白
+                //怀旧
                 val result = OpenCvIn.makeBitmapNostalgia(bitmap)
                 runOnUiThread{
                     image.setImageBitmap(result)

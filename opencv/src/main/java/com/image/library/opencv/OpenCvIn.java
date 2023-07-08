@@ -144,7 +144,7 @@ public class OpenCvIn {
      * 图片暗通道去雾
      *
      * @param bitmap   需要处理的原始图片
-     * @param value 去雾程度
+     * @param value 去雾程度 [0,1]
      * @return 处理好的图片
      */
     public static native Bitmap makeBitmapRemoveFog(Bitmap bitmap,Bitmap mask,float value);

@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val image = findViewById<ImageView>(R.id.vImageCover)
-        val bitmap = BitmapFactory.decodeResource(resources,R.mipmap.yu)
+        val bitmap = BitmapFactory.decodeResource(resources,R.mipmap.test)
         image.setImageBitmap(bitmap)
         val bitmapMask = Bitmap.createBitmap(bitmap.width,bitmap.height,Bitmap.Config.ARGB_8888)
         val can = Canvas(bitmapMask)

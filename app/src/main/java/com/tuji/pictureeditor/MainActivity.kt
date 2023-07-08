@@ -1200,7 +1200,7 @@ class MainActivity : AppCompatActivity() {
                 mHhlData.yellowSValue = findViewById<SeekBar>(R.id.vColorSeekbarS).progress/100f
                 mHhlData.yellowLValue = findViewById<SeekBar>(R.id.vColorSeekbarL).progress/100f
             }
-            R.id.vRbGreen -> {
+            R.id.vRbHslGreen -> {
                 mHhlData.greenHValue = findViewById<SeekBar>(R.id.vColorSeekbarH).progress/100f
                 mHhlData.greenSValue = findViewById<SeekBar>(R.id.vColorSeekbarS).progress/100f
                 mHhlData.greenLValue = findViewById<SeekBar>(R.id.vColorSeekbarL).progress/100f

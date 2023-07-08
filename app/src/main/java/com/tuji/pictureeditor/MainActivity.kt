@@ -20,6 +20,7 @@ import com.image.library.opencv.bean.CurveData
 import com.image.library.opencv.bean.HslBean
 import com.image.library.opencv.bean.MixColorChannel
 import com.image.library.opencv.en.ColorChannelEnum
+import com.image.library.opencv.ui.CameraActivity
 import com.image.library.opencv.view.CurveLineToolsView
 import com.image.library.opencv.view.ImageHistogram
 import kotlinx.coroutines.CoroutineScope
@@ -43,6 +44,8 @@ class MainActivity : AppCompatActivity() {
     private var mColorPro: ChangeColorDataBean = ChangeColorDataBean()
     private var mColorMotely: ChangeColorDataBean = ChangeColorDataBean()
     private var mColorBalance = ColorBalance()
+    private var usmOutlinePro = BaseSettingDataBean()
+    private var usmDetailPro = BaseSettingDataBean()
 
 
 
@@ -177,6 +180,33 @@ class MainActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 //侵蚀滤镜
                 val result = OpenCvIn.makeBitmapErode(bitmap)
+                runOnUiThread{
+                    image.setImageBitmap(result)
+                }
+            }
+        }
+        findViewById<Button>(R.id.vBtn12).setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                //水平翻转
+                val result = OpenCvIn.getRotationXY(bitmap,true)
+                runOnUiThread{
+                    image.setImageBitmap(result)
+                }
+            }
+        }
+        findViewById<Button>(R.id.vBtn18).setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                //垂直翻转
+                val result = OpenCvIn.getRotationXY(bitmap,false)
+                runOnUiThread{
+                    image.setImageBitmap(result)
+                }
+            }
+        }
+        findViewById<Button>(R.id.vBtn19).setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                //尺寸调整
+                val result = OpenCvIn.imageResize(bitmap,0.4,0.4);
                 runOnUiThread{
                     image.setImageBitmap(result)
                 }
@@ -892,6 +922,164 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        //=========轮廓增强========
+        findViewById<SeekBar>(R.id.vSeekOutline).setOnSeekBarChangeListener(object:SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                usmOutlinePro.dunkNumber = progress/100.0*50
+                usmOutlinePro.dunkRadio = 50.0
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<Button>(R.id.vBtnApplyOutline).setOnClickListener {
+            val mCurrentBitmap = OpenCvIn.usmFilter(
+                bitmap!!,bitmapMask,
+                usmOutlinePro.dunkRadio.toInt(),
+                usmOutlinePro.dunkNumber.toInt(),
+                usmOutlinePro.dunkThreshold.toInt()
+            )
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(mCurrentBitmap)
+            }
+        }
+
+        //=========细节增强========
+        findViewById<SeekBar>(R.id.vSeekUsmDetail).setOnSeekBarChangeListener(object:SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                usmDetailPro.dunkNumber = progress/100.0*50
+                usmDetailPro.dunkRadio = 1.5
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        findViewById<Button>(R.id.vBtnApplyUsmDetail).setOnClickListener {
+            val mCurrentBitmap = OpenCvIn.usmFilter(
+                bitmap!!,bitmapMask,
+                usmDetailPro.dunkRadio.toInt(),
+                usmDetailPro.dunkNumber.toInt(),
+                usmDetailPro.dunkThreshold.toInt()
+            )
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(mCurrentBitmap)
+            }
+        }
+
+        //对比度
+        findViewById<Button>(R.id.vBtnApplyContrast).setOnClickListener {
+            val currentBitmap = OpenCvIn.brinessAndContrastChange(
+                bitmap!!,bitmapMask,
+                0,
+                findViewById<SeekBar>(R.id.vSeekContrast).progress
+            )
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(currentBitmap)
+            }
+        }
+
+        //亮度
+        findViewById<Button>(R.id.vBtnApplyBriness).setOnClickListener {
+            val currentBitmap = OpenCvIn.brinessAndContrastChange(
+                bitmap!!,bitmapMask,
+                findViewById<SeekBar>(R.id.vSeekBriness).progress,
+                0
+            )
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(currentBitmap)
+            }
+        }
+
+        //高光阴影
+        findViewById<Button>(R.id.vBtnApplyHightLightAndShadow).setOnClickListener {
+            val currentBitmap = OpenCvIn.HighAndDarkLightChange(bitmap,bitmapMask,findViewById<SeekBar>(R.id.vSeekShadow).progress/100f,findViewById<SeekBar>(R.id.vSeekHightLight).progress/100f)
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(currentBitmap)
+            }
+        }
+
+        //色温
+        findViewById<Button>(R.id.vBtnApplyColorTemperature).setOnClickListener {
+            val currentBitmap = OpenCvIn.changeTemp(bitmap, bitmapMask,findViewById<SeekBar>(R.id.vSeekColorTemperature).progress)
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(currentBitmap)
+            }
+        }
+
+        //色调
+        findViewById<Button>(R.id.vBtnApplyTone).setOnClickListener {
+            val currentBitmap = OpenCvIn.changeColorHue(bitmap, bitmapMask,findViewById<SeekBar>(R.id.vSeekTone).progress)
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(currentBitmap)
+            }
+        }
+
+        //曝光
+        findViewById<Button>(R.id.vBtnApplyExposure).setOnClickListener {
+            var currentBitmap:Bitmap?=null
+            var b = findViewById<SeekBar>(R.id.vSeekExposure).progress
+            if (findViewById<SeekBar>(R.id.vSeekExposure).progress < 0){
+                currentBitmap =OpenCvIn.curveToolsPro(bitmap,bitmapMask,
+                    doubleArrayOf(0.0,255.0),doubleArrayOf(0.0,255.0) ,
+                    doubleArrayOf(0.0,255.0),doubleArrayOf(0.0,255.0) ,
+                    doubleArrayOf(0.0,255.0),doubleArrayOf(0.0,255.0) ,
+                    doubleArrayOf(-125*(b/100.0),255.0),doubleArrayOf(0.0,255.0 + 185*(b/100.0))
+                )
+            }else if (findViewById<SeekBar>(R.id.vSeekExposure).progress > 0){
+                currentBitmap =OpenCvIn.curveToolsPro(bitmap,bitmapMask,
+                    doubleArrayOf(0.0,255.0),doubleArrayOf(0.0,255.0) ,
+                    doubleArrayOf(0.0,255.0),doubleArrayOf(0.0,255.0) ,
+                    doubleArrayOf(0.0,255.0),doubleArrayOf(0.0,255.0) ,
+                    doubleArrayOf(0.0,255.0 - 185*(b/100.0)),doubleArrayOf(185*(b/100.0),255.0)
+                )
+            }else{
+                currentBitmap =OpenCvIn.curveToolsPro(bitmap,bitmapMask,
+                    doubleArrayOf(0.0,255.0),doubleArrayOf(0.0,255.0) ,
+                    doubleArrayOf(0.0,255.0),doubleArrayOf(0.0,255.0) ,
+                    doubleArrayOf(0.0,255.0),doubleArrayOf(0.0,255.0) ,
+                    doubleArrayOf(0.0,255.0),doubleArrayOf(0.0,255.0)
+                )
+            }
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(currentBitmap)
+            }
+        }
+
+        findViewById<Button>(R.id.vBtn20).setOnClickListener {
+            CameraActivity.start(this)
+        }
+
+        //白色暗角
+        findViewById<Button>(R.id.vBtnApplyWhiteDarkCorner).setOnClickListener {
+            var maskBitmap = BitmapFactory.decodeResource(resources, com.image.library.main.R.drawable.bg_dark_corner)
+            maskBitmap = OpenCvIn.imageResize(maskBitmap,bitmap.width/(maskBitmap!!.width*1.0) ,bitmap.height/(maskBitmap!!.height*1.0))
+            val currentBitmap = OpenCvIn.darkCorner(bitmap,maskBitmap,false, (findViewById<SeekBar>(R.id.vSeekWhiteDarkCorner)).progress/100f )
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(currentBitmap)
+            }
+        }
+
+        //黑色暗角
+        findViewById<Button>(R.id.vBtnApplyBlackDarkCorner).setOnClickListener {
+            var maskBitmap = BitmapFactory.decodeResource(resources, com.image.library.main.R.drawable.bg_dark_corner)
+            maskBitmap = OpenCvIn.imageResize(maskBitmap,bitmap.width/(maskBitmap!!.width*1.0) ,bitmap.height/(maskBitmap!!.height*1.0))
+            val currentBitmap = OpenCvIn.darkCorner(bitmap,maskBitmap,true, (findViewById<SeekBar>(R.id.vSeekBlackDarkCorner)).progress/100f )
+            runOnUiThread {
+                findViewById<ImageView>(R.id.vImageCover).setImageBitmap(currentBitmap)
+            }
+        }
+
     }
 
     fun setColorBalanceData(h:Int,s:Int,b:Int){

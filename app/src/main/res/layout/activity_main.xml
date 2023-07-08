@@ -153,7 +153,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/vImageCover"
-                    android:textSize="12dp"
+                    android:textSize="10dp"
+                    android:text="水平翻转"
                     android:id="@+id/vBtn12"/>
             </LinearLayout>
             <LinearLayout
@@ -222,7 +223,7 @@
                     app:layout_constraintTop_toBottomOf="@id/vImageCover"
                     android:id="@+id/vBtn18"
                     android:textSize="12dp"
-                    android:text="膨胀"/>
+                    android:text="垂直翻转"/>
                 <Button
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -232,7 +233,7 @@
                     app:layout_constraintTop_toBottomOf="@id/vImageCover"
                     android:id="@+id/vBtn19"
                     android:textSize="12dp"
-                    android:text="连环画"/>
+                    android:text="尺寸修改"/>
                 <Button
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -241,8 +242,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/vImageCover"
                     android:id="@+id/vBtn20"
-                    android:textSize="12dp"
-                    android:text="侵蚀"/>
+                    android:textSize="10dp"
+                    android:text="LUT相机"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1754,6 +1755,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@drawable/bg_frame_usm"
                 android:padding="10dp"
+                tools:visibility="gone"
                 android:layout_marginTop="10dp"
                 android:id="@+id/vLlContentBox"
                 android:orientation="vertical">
@@ -1939,6 +1941,411 @@
                     android:text="应用"
                     android:layout_marginTop="10dp"
                     android:id="@+id/vBtnApplyRemoveColorBalance"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_usm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                tools:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="轮廓增强"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_text_color"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vSeekOutline"
+                    android:layout_marginTop="10dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="应用"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/vBtnApplyOutline"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_usm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                tools:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="细节增强"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_text_color"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vSeekUsmDetail"
+                    android:layout_marginTop="10dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="应用"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/vBtnApplyUsmDetail"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_usm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                tools:visibility="gone"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="对比度"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_text_color"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vSeekContrast"
+                    android:max="100"
+                    android:min="-100"
+                    android:progress="0"
+                    android:layout_marginTop="10dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="应用"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/vBtnApplyContrast"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_usm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                tools:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="亮度"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_text_color"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vSeekBriness"
+                    android:max="100"
+                    android:min="-100"
+                    android:progress="0"
+                    android:layout_marginTop="10dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="应用"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/vBtnApplyBriness"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_usm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                tools:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="高光阴影"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_text_color"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="高光"/>
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/vSeekHightLight"
+                        android:max="100"
+                        android:min="-100"
+                        android:progress="0"
+                        android:layout_marginTop="10dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="阴影"/>
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/vSeekShadow"
+                        android:max="100"
+                        android:min="-100"
+                        android:progress="0"
+                        android:layout_marginTop="10dp"/>
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="应用"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/vBtnApplyHightLightAndShadow"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_usm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                tools:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="色温"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_text_color"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vSeekColorTemperature"
+                    android:max="100"
+                    android:min="-100"
+                    android:progress="0"
+                    android:layout_marginTop="10dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="应用"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/vBtnApplyColorTemperature"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_usm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                tools:visibility="gone"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="色调"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_text_color"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vSeekTone"
+                    android:max="100"
+                    android:min="-100"
+                    android:progress="0"
+                    android:layout_marginTop="10dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="应用"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/vBtnApplyTone"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_usm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                tools:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="曝光度"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_text_color"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vSeekExposure"
+                    android:max="100"
+                    android:min="-100"
+                    android:progress="0"
+                    android:layout_marginTop="10dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="应用"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/vBtnApplyExposure"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_usm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="白色暗角"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_text_color"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vSeekWhiteDarkCorner"
+                    android:max="100"
+                    android:min="0"
+                    android:layout_marginTop="10dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="应用"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/vBtnApplyWhiteDarkCorner"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_usm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="黑色暗角"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_text_color"/>
+
+                 <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vSeekBlackDarkCorner"
+                    android:max="100"
+                    android:min="0"
+                    android:layout_marginTop="10dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="应用"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/vBtnApplyBlackDarkCorner"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"/>
 

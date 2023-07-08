@@ -597,15 +597,15 @@ public class OpenCvIn {
     /**
      * 改变色温
      * @param bitmap
-     * @param tempValue
+     * @param tempValue [-100,100]
      * @return
      */
     public static native Bitmap changeTemp(Bitmap bitmap,Bitmap mask,int tempValue);
 
     /**
-     * 改变色温
+     * 改变色调
      * @param bitmap
-     * @param tempValue
+     * @param tempValue [-100,100]
      * @return
      */
     public static native Bitmap changeColorHue(Bitmap bitmap,Bitmap mask,int tempValue);

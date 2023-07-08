@@ -622,7 +622,7 @@
 
                     <com.image.library.opencv.view.CurveLineToolsView
                         android:id="@+id/vCurve"
-                        android:layout_width="0dp"
+                        android:layout_width="250dp"
                         android:layout_height="0dp"
                         android:layout_marginTop="5dp"
                         app:layout_constraintDimensionRatio="1:1"

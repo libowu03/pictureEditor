@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         val bitmapMask = Bitmap.createBitmap(bitmap.width,bitmap.height,Bitmap.Config.ARGB_8888)
         val can = Canvas(bitmapMask)
         can.drawColor(Color.WHITE)
-        findViewById<ScrollSelfView>(R.id.vScoreView).childV = findViewById(R.id.vLlCurv)
+        findViewById<ScrollSelfView>(R.id.vScoreView).childV = findViewById(R.id.vCurve)
         findViewById<Button>(R.id.vBtn1).setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 //像素化
